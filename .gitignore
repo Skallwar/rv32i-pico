@@ -33,3 +33,10 @@
 
 # Tags
 tags
+
+# Trace output
+*.vcd
+
+# Output folder
+obj_dir
+
