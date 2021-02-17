@@ -7,15 +7,13 @@ module regs(
     output logic [31:0] reg1
 );
 
-    logic [31:0] registers [31:0];
+    logic [31:0] registers [31:1];
 
-    assign registers[0] = 'b0;
+    assign reg1 = (reg1_select != 0) ? registers[reg1_select] : 0;
 
-    always_ff @(posedge clk)
+    always @(posedge clk)
     begin
-        reg1 <= registers[reg1_select];
         registers[reg_write_select] <= reg_write_data;
     end
-
 
 endmodule

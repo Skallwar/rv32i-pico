@@ -22,6 +22,10 @@ int main(int argc, char** argv, char** env) {
         cpu->clk = !cpu->clk;
         }
 
+        if (main_time / 20 == 5) {
+            break;
+        }
+
         trace->dump(main_time);
         main_time ++;
 
