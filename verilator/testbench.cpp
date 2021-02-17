@@ -1,4 +1,4 @@
-#include "Vtop.h"
+#include "Vcpu.h"
 #include "verilated.h"
 
 #include <verilated_vcd_c.h>
@@ -11,24 +11,24 @@ int main(int argc, char** argv, char** env) {
 
     VerilatedVcdC* trace = new VerilatedVcdC;
 
-    Vtop* top = new Vtop;
-    top->trace(trace, 100);
+    Vcpu* cpu = new Vcpu;
+    cpu->trace(trace, 100);
     trace->open("dump.vcd");
 
     vluint64_t main_time = 0;
 
     while (!Verilated::gotFinish()) {
         if ((main_time % 10) == 1) {
-        top->clk = !top->clk;
+        cpu->clk = !cpu->clk;
         }
 
         trace->dump(main_time);
         main_time ++;
 
-        top->eval();
+        cpu->eval();
     }
 
-    delete top;
+    delete cpu;
     trace->close();
     exit(0);
 }
