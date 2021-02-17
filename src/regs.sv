@@ -4,6 +4,7 @@ module regs(
     input logic [4:0] reg1_select,
     input logic [4:0] reg_write_select,
     input logic [31:0] reg_write_data,
+    input logic reg_write_control,
     output logic [31:0] reg1
 );
 
@@ -13,7 +14,7 @@ module regs(
 
     always @(posedge clk)
     begin
-        registers[reg_write_select] <= reg_write_data;
+        if (reg_write_control) registers[reg_write_select] <= reg_write_data;
     end
 
 endmodule
