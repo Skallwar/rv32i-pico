@@ -6,11 +6,11 @@ module ram(
     output logic [31:0] out
 );
 
-    logic [31:0] rom_data [31:0];
+    logic [31:0] ram_data [31:0];
 
-    assign out = rom_data[addr/4];
+    assign out = ram_data[addr/4];
 
     always_ff @(posedge clk)
-        if (write_control) rom_data[addr/4] <= write_data;
+        if (write_control) ram_data[addr/4] <= write_data;
 
 endmodule;

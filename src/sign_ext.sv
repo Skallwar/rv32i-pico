@@ -6,8 +6,10 @@ module sign_ext(
 
     always_comb
         case(control)
+            // I-type
             0'b0: res = {{20{instruction[31]}}, {instruction[31:20]}};
-            1'b0: res = {{20{instruction[31]}}, {instruction[31:25]}, {instruction[11:7]}};
+            // S-type
+            1'b1: res = {{20{instruction[31]}}, {instruction[31:25]}, {instruction[11:7]}};
         endcase
 
 endmodule

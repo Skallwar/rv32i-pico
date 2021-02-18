@@ -12,13 +12,22 @@ module controller(
 
     always_comb
         casez(opcode_func3)
-            // Addi
+            // Integer Register-Immediate
             'b0010011???:
                 begin
                     alu_control = func3;
                     reg_write_control = 1;
                     sign_ext_control = 0;
                     data_mem_write_control = 0;
+                end
+            // Store
+            'b0100011???:
+                begin
+                    alu_control = 0; // Add
+                    reg_write_control = 0;
+                    sign_ext_control = 1; // S-type extension
+                    data_mem_write_control = 1;
+
                 end
             default:
                 begin
