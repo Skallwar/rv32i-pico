@@ -1,11 +1,11 @@
 module regs(
     input logic clk,
     input logic reset,
+    input logic reg_write_control,
     input logic [4:0] reg1_select,
     input logic [4:0] reg2_select,
     input logic [4:0] reg_write_select,
     input logic [31:0] reg_write_data,
-    input logic reg_write_control,
     output logic [31:0] reg1,
     output logic [31:0] reg2
 );

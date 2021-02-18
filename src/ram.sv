@@ -2,7 +2,7 @@ module ram(
     input logic clk,
     input logic write_control,
     input logic [31:0] addr,
-    input logic [31: 0] write_data,
+    input logic [31:0] write_data,
     output logic [31:0] out
 );
 
