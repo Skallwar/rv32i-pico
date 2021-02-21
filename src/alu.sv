@@ -2,8 +2,11 @@ module alu(
     input logic [2:0] control,
     input logic [31:0] input1,
     input logic [31:0] input2,
+    output logic zero,
     output logic [31:0] result
 );
+
+    assign zero = result == 0;
 
     always_comb
         case(control)

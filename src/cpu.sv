@@ -1,10 +1,12 @@
 module cpu(input logic clk, input logic reset);
 
     logic[31:0] pc, instr, r1, r2, sign_ext_out, alu_out, data_out, reg_write_data;
-    logic [2:0] alu_control;
-    logic reg_write_control, sign_ext_control, data_memory_write_control, reg_write_data_source_control;
+    logic alu_zero;
 
-    // assign instr = 32'b10101000000000000010010011;
+    logic reg_write_control, data_memory_write_control, reg_write_data_source_control, pc_source_control;
+    logic [1:0] sign_ext_control;
+    logic [2:0] alu_control;
+
     initial
         pc = 0;
 
@@ -18,7 +20,8 @@ module cpu(input logic clk, input logic reset);
         reg_write_control,
         sign_ext_control,
         data_memory_write_control,
-        reg_write_data_source_control
+        reg_write_data_source_control,
+        pc_source_control
     );
 
     regs regs(
@@ -35,7 +38,7 @@ module cpu(input logic clk, input logic reset);
 
     sign_ext sign_ext(sign_ext_control, instr[31:0], sign_ext_out);
 
-    alu alu(alu_control, r1, sign_ext_out, alu_out);
+    alu alu(alu_control, r1, sign_ext_out, alu_zero, alu_out);
 
     ram data_memory(clk, data_memory_write_control, alu_out, r2, data_out);
 
@@ -47,6 +50,6 @@ module cpu(input logic clk, input logic reset);
     );
 
     always_ff @(posedge clk)
-        pc <= pc + 4;
+        pc <= (pc_source_control == 0)? pc + 4 : pc + sign_ext_out;
 
 endmodule
