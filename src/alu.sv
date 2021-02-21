@@ -11,6 +11,7 @@ module alu(
     always_comb
         case(control)
             'b000: result = input1 + input2;
+            'b001: result = input1 - input2;
             'b111: result = input1 & input2;
             default: $display("ALU: Control=0b%0b; Not handled", control);
         endcase
