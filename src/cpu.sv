@@ -5,7 +5,7 @@ module cpu(input logic clk, input logic reset);
 
     logic reg_write_control, data_memory_write_control, reg_write_data_source_control, pc_source_control, alu_input2_source_control;
     logic [1:0] sign_ext_control;
-    logic [2:0] alu_control;
+    logic [3:0] alu_control;
 
     initial
         pc = 0;
@@ -16,6 +16,7 @@ module cpu(input logic clk, input logic reset);
     controller controller(
         instr[6:0],
         instr[14:12],
+        instr[31:25],
         alu_control,
         reg_write_control,
         sign_ext_control,
