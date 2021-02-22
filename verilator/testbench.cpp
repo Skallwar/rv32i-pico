@@ -22,7 +22,7 @@ int main(int argc, char** argv, char** env) {
         cpu->clk = !cpu->clk;
         }
 
-        if (main_time / 20 == 5) {
+        if (main_time / 20 == 20) {
             break;
         }
 
