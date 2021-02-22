@@ -1,9 +1,9 @@
 module cpu(input logic clk, input logic reset);
 
-    logic[31:0] pc, instr, r1, r2, sign_ext_out, alu_out, data_out, reg_write_data, alu_input2;
+    logic[31:0] pc, new_pc, instr, r1, r2, sign_ext_out, alu_out, data_out, reg_write_data, alu_input2;
     logic alu_zero;
 
-    logic reg_write_control, data_memory_write_control, reg_write_data_source_control, pc_source_control, alu_input2_source_control;
+    logic reg_write_control, data_memory_write_control, reg_write_data_source_control, pc_source_control, alu_input2_source_control, is_branch, branch_control;
     logic [1:0] sign_ext_control;
     logic [3:0] alu_control;
 
@@ -23,7 +23,8 @@ module cpu(input logic clk, input logic reset);
         alu_input2_source_control,
         data_memory_write_control,
         reg_write_data_source_control,
-        pc_source_control
+        is_branch,
+        branch_control
     );
 
     regs regs(
@@ -58,7 +59,9 @@ module cpu(input logic clk, input logic reset);
         reg_write_data
     );
 
+    pc_logic pc_logic(pc, sign_ext_out, is_branch, branch_control, alu_zero, new_pc);
+
     always_ff @(posedge clk)
-        pc <= (pc_source_control == 0)? pc + 4 : pc + sign_ext_out;
+        pc <= new_pc;
 
 endmodule
