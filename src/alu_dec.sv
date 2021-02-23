@@ -32,6 +32,8 @@ module alu_dec(
             17'b0010011_???????_000: alu_control = 4'b0010;
             // I-type and
             17'b0010011_???????_111: alu_control = 4'b0000;
+            // J-type jal:
+            17'b1101111_???????_???: alu_control = 4'b0000; // Not used
             default:
                 begin
                     alu_control = 4'b1111;

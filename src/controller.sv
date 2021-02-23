@@ -7,9 +7,10 @@ module controller(
     output logic [1:0] sign_ext_control,
     output logic alu_input2_source_control,
     output logic data_mem_write_control,
-    output logic reg_write_data_source_control,
+    output logic [1: 0] reg_write_data_source_control,
     output logic is_branch,
-    output logic branch_control
+    output logic branch_control,
+    output logic is_jump
 );
 
     logic [9:0] opcode_func3;
@@ -27,48 +28,64 @@ module controller(
     always_comb
         casez(opcode_func3)
             // Integer Register-Immediate
-            'b0010011???:
+            'b0010011_???:
                 begin
                     reg_write_control = 1; // Write
-                    sign_ext_control = 'b0; // I-type
+                    sign_ext_control = 'b00; // I-type
                     alu_input2_source_control = 0; // Signext
                     data_mem_write_control = 0; // No write
                     reg_write_data_source_control = 0; // ALU out as source
                     is_branch = 0; // Not a branch
                     branch_control = 0; // +4
+                    is_jump = 0; // Not a jump
                 end
             // Store
-            'b0100011???:
+            'b0100011_???:
                 begin
                     reg_write_control = 0; // No write
-                    sign_ext_control = 'b1; // S-type extension
+                    sign_ext_control = 'b01; // S-type extension
                     alu_input2_source_control = 0; // Signext
                     data_mem_write_control = 1; // Write to ram
                     reg_write_data_source_control = 0; // Unused
                     is_branch = 0; // Not a branch
                     branch_control = 0; // +4
+                    is_jump = 0; // Not a jump
                 end
             // Load
-            'b0000011???:
+            'b0000011_???:
                 begin
                     reg_write_control = 1; // Write
-                    sign_ext_control = 'b0; // I-type
+                    sign_ext_control = 'b00; // I-type
                     alu_input2_source_control = 0; // Signext
                     data_mem_write_control = 0; // No write to ram
                     reg_write_data_source_control = 1; // RAM output as source
                     is_branch = 0; // Not a branch
                     branch_control = 0; // +4
+                    is_jump = 0; // Not a jump
                 end
             // BEQ
-            'b1100011???:
+            'b1100011_???:
                 begin
                     reg_write_control = 0; // No write
                     sign_ext_control = 'b10; // B-type
                     alu_input2_source_control = 1; // Reg 2
                     data_mem_write_control = 0; // No write to ram
                     reg_write_data_source_control = 0; // Not used
-                    is_branch = 1; // Not a branch
+                    is_branch = 1; // Is a branch
                     branch_control = 1; // Use pc + imm
+                    is_jump = 0; // Not a jump
+                end
+            // Jal
+            'b1101111_???:
+                begin
+                    reg_write_control = 1; // Write
+                    sign_ext_control = 'b11; // B-type
+                    alu_input2_source_control = 1; // XXXXX
+                    data_mem_write_control = 0; // No write to ram
+                    reg_write_data_source_control = 'b10; // PC + 4 as source
+                    is_branch = 0; // Not a branch
+                    branch_control = 0; // Not used
+                    is_jump = 1; // Is a jump
                 end
             default:
                 begin
