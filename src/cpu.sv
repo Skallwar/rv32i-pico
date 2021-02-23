@@ -1,11 +1,13 @@
 module cpu(input logic clk, input logic reset);
 
-    logic[31:0] pc, new_pc, instr, r1, r2, sign_ext_out, alu_out, data_out, reg_write_data, alu_input2;
+    logic[31:0] pc, pc_plus_4, new_pc, instr, r1, r2, sign_ext_out, alu_out, data_out, reg_write_data, alu_input2;
     logic alu_zero;
 
-    logic reg_write_control, data_memory_write_control, reg_write_data_source_control, pc_source_control, alu_input2_source_control, is_branch, branch_control;
-    logic [1:0] sign_ext_control;
+    logic reg_write_control, data_memory_write_control, pc_source_control, alu_input2_source_control, is_branch, branch_control, is_jump;
+    logic [1:0] sign_ext_control, reg_write_data_source_control;
     logic [3:0] alu_control;
+
+    assign pc_plus_4 = pc + 4;
 
     initial
         pc = 0;
@@ -24,7 +26,8 @@ module cpu(input logic clk, input logic reset);
         data_memory_write_control,
         reg_write_data_source_control,
         is_branch,
-        branch_control
+        branch_control,
+        is_jump
     );
 
     regs regs(
@@ -52,14 +55,15 @@ module cpu(input logic clk, input logic reset);
 
     ram data_memory(clk, data_memory_write_control, alu_out, r2, data_out);
 
-    multiplexer2 reg_write_data_source_mux(
+    multiplexer3 reg_write_data_source_mux(
         reg_write_data_source_control,
         alu_out,
         data_out,
+        pc_plus_4,
         reg_write_data
     );
 
-    pc_logic pc_logic(pc, sign_ext_out, is_branch, branch_control, alu_zero, new_pc);
+    pc_logic pc_logic(pc, pc_plus_4, sign_ext_out, alu_zero, is_branch, branch_control, is_jump, new_pc);
 
     always_ff @(posedge clk)
         pc <= new_pc;

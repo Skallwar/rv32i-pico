@@ -12,6 +12,8 @@ module sign_ext(
             'b01: res = {{20{instruction[31]}}, {instruction[31:25]}, {instruction[11:7]}};
             // B-type
             'b10: res = {{19{instruction[31]}}, {instruction[31]}, {instruction[7]}, {instruction[30:25]}, {instruction[11:8]}, 1'b0};
+            // J-type
+            'b11: res = {{11{instruction[31]}}, {instruction[31]}, {instruction[19:12]}, {instruction[20]}, {instruction[30:21]}, 1'b0};
         endcase
 
 endmodule
