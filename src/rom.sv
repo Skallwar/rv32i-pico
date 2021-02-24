@@ -13,6 +13,7 @@ module rom(input logic clk, input logic [31:0] addr, output logic [31:0] data);
         rom_data[8] = 32'b0_0000000100_0_00000000_00011_1101111; // jal x3, 8
         // rom_data[9] is never run because of beq
         rom_data[10] = 32'b000000000000_00000_000_00000_0010011; // addi x0, x0, 0
+        rom_data[11] = 32'b0100000_00011_00010_000_00011_0110011; // sub x3, x2, x3
 
     end
 
