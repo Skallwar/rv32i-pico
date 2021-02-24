@@ -31,10 +31,10 @@ module controller(
             'b0010011_???:
                 begin
                     reg_write_control = 1; // Write
-                    sign_ext_control = 'b00; // I-type
+                    sign_ext_control = 2'b00; // I-type
                     alu_input2_source_control = 0; // Signext
                     data_mem_write_control = 0; // No write
-                    reg_write_data_source_control = 0; // ALU out as source
+                    reg_write_data_source_control = 2'b00; // ALU out as source
                     is_branch = 0; // Not a branch
                     branch_control = 0; // +4
                     is_jump = 0; // Not a jump
@@ -43,10 +43,10 @@ module controller(
             'b0100011_???:
                 begin
                     reg_write_control = 0; // No write
-                    sign_ext_control = 'b01; // S-type extension
+                    sign_ext_control = 2'b01; // S-type extension
                     alu_input2_source_control = 0; // Signext
                     data_mem_write_control = 1; // Write to ram
-                    reg_write_data_source_control = 0; // Unused
+                    reg_write_data_source_control = 2'b00; // Unused
                     is_branch = 0; // Not a branch
                     branch_control = 0; // +4
                     is_jump = 0; // Not a jump
@@ -55,10 +55,10 @@ module controller(
             'b0000011_???:
                 begin
                     reg_write_control = 1; // Write
-                    sign_ext_control = 'b00; // I-type
+                    sign_ext_control = 2'b00; // I-type
                     alu_input2_source_control = 0; // Signext
                     data_mem_write_control = 0; // No write to ram
-                    reg_write_data_source_control = 1; // RAM output as source
+                    reg_write_data_source_control = 2'b01; // RAM output as source
                     is_branch = 0; // Not a branch
                     branch_control = 0; // +4
                     is_jump = 0; // Not a jump
@@ -67,10 +67,10 @@ module controller(
             'b1100011_???:
                 begin
                     reg_write_control = 0; // No write
-                    sign_ext_control = 'b10; // B-type
+                    sign_ext_control = 2'b10; // B-type
                     alu_input2_source_control = 1; // Reg 2
                     data_mem_write_control = 0; // No write to ram
-                    reg_write_data_source_control = 0; // Not used
+                    reg_write_data_source_control = 2'b00; // Not used
                     is_branch = 1; // Is a branch
                     branch_control = 1; // Use pc + imm
                     is_jump = 0; // Not a jump
@@ -79,13 +79,25 @@ module controller(
             'b1101111_???:
                 begin
                     reg_write_control = 1; // Write
-                    sign_ext_control = 'b11; // B-type
-                    alu_input2_source_control = 1; // XXXXX
+                    sign_ext_control = 2'b11; // B-type
+                    alu_input2_source_control = 1; // Unused
                     data_mem_write_control = 0; // No write to ram
-                    reg_write_data_source_control = 'b10; // PC + 4 as source
+                    reg_write_data_source_control = 2'b10; // PC + 4 as source
                     is_branch = 0; // Not a branch
                     branch_control = 0; // Not used
                     is_jump = 1; // Is a jump
+                end
+            // R-type
+            'b0110011_???:
+                begin
+                    reg_write_control = 1; // Write
+                    sign_ext_control = 2'b00; // Unused
+                    alu_input2_source_control = 1; // Register
+                    data_mem_write_control = 0; // No write to ram
+                    reg_write_data_source_control = 2'b00; // Alu out
+                    is_branch = 0; // Not a branch
+                    branch_control = 0; // Not used
+                    is_jump = 0; // Is a jump
                 end
             default:
                 begin
