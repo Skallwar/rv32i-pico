@@ -28,6 +28,8 @@ module alu_dec(
             17'b0110011_0000000_111: alu_control = 4'b0000;
             // R-type or
             17'b0110011_0000000_110: alu_control = 4'b0001;
+            // R-typ slt
+            17'b0110011_0000000_010: alu_control = 4'b0011;
             // I-type add
             17'b0010011_???????_000: alu_control = 4'b0010;
             // I-type and

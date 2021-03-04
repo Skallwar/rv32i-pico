@@ -10,10 +10,11 @@ module alu(
 
     always_comb
         case(control)
-            4'b0010: result = input1 + input2;
-            4'b0110: result = input1 - input2;
             4'b0000: result = input1 & input2;
             4'b0001: result = input1 | input2;
+            4'b0010: result = input1 + input2;
+            4'b0011: result = {{31{1'0}}, input1 < input2};
+            4'b0110: result = input1 - input2;
             default: 
                 begin
                     result = 'hCAFE;
