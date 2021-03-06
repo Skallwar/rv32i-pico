@@ -30,6 +30,8 @@
 *.exe
 *.out
 *.app
+*.elf
+*.bin
 
 # Tags
 tags
