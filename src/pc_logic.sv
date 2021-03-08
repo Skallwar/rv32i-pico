@@ -1,4 +1,5 @@
 module pc_logic(
+    input logic enable,
     input logic [31:0] pc,
     input logic [31:0] pc_plus_4,
     input logic [31:0] sign_ext_out,
@@ -11,12 +12,15 @@ module pc_logic(
 
     always_comb
         begin
-            if (is_branch && !(branch_control ^ alu_zero))
-                new_pc = pc + sign_ext_out;
-            else if (is_jump)
-                new_pc = pc + sign_ext_out;
+            if (enable)
+                if (is_branch && !(branch_control ^ alu_zero))
+                    new_pc = pc + sign_ext_out;
+                else if (is_jump)
+                    new_pc = pc + sign_ext_out;
+                else
+                    new_pc = pc_plus_4;
             else
-                new_pc = pc_plus_4;
+                new_pc = pc;
         end
 
 endmodule
