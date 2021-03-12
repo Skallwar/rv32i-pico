@@ -15,7 +15,7 @@ module hazard_unit(
         end
 
     always_comb
-        if (instr[6:0] == 7'b1100011)
+        if (instr[6:0] == 7'b1100011 || instr[6:0] == 7'b1101111)
             begin
                 pc_enable_new = 0;
                 ifid_enable_new = 0;
@@ -28,8 +28,12 @@ module hazard_unit(
 
     always_ff @(posedge clk)
         begin
-            pc_enable <= pc_enable_new;
             ifid_enable <= ifid_enable_new;
+        end
+
+    always_ff @(posedge clk)
+        begin
+            pc_enable <= pc_enable_new;
         end
 
 

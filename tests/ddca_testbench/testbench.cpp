@@ -1,6 +1,7 @@
 #include "Vcpu.h"
 #include "Vcpu_cpu.h"
 #include "Vcpu_rom.h"
+#include "Vcpu_instr_fetch.h"
 #include "Vcpu_ram.h"
 #include "verilated.h"
 
@@ -21,7 +22,7 @@ static void state_setup(Vcpu *cpu) {
     unsigned int instr = 0;
     while (fread(&instr, 4, 1, instr_file)) {
         printf("%x\n", instr);
-        cpu->cpu->instruction_memory->rom_data[i++] = instr;
+        cpu->cpu->instruction_fetch->rom_data[i++] = instr;
     }
 }
 
