@@ -1,4 +1,4 @@
-module rom(input logic clk, input logic [31:0] addr, output logic [31:0] data);
+module rom(input logic [31:0] addr, output logic [31:0] data);
 
     logic [31:0] rom_data [31:0] /* verilator public */;
 

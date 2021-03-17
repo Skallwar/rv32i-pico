@@ -12,9 +12,15 @@ module cpu(input logic clk, input logic reset);
     initial
         pc = 0;
 
-    rom instruction_memory(clk, pc, instr);
+    logic [31:0] instr_fetch;
+    rom instruction_fetch(pc, instr_fetch);
 
     // Datapath
+
+    logic ifid_enable, pc_enable;
+    logic [31:0] ifid_pc;
+    ifid_register ifid_register(clk, ifid_enable, instr_fetch, pc, instr, ifid_pc);
+
     controller controller(
         instr[6:0],
         instr[14:12],
@@ -29,6 +35,8 @@ module cpu(input logic clk, input logic reset);
         branch_ctrl,
         is_jump
     );
+
+    hazard_unit hazard_unit(clk, instr_fetch, pc_enable, ifid_enable);
 
     regs regs(
         clk,
@@ -63,7 +71,7 @@ module cpu(input logic clk, input logic reset);
         reg_write_data
     );
 
-    pc_logic pc_logic(pc, pc_plus_4, sign_ext_out, alu_zero, is_branch, branch_ctrl, is_jump, new_pc);
+    pc_logic pc_logic(clk, pc_enable, pc, pc_plus_4, ifid_pc, sign_ext_out, alu_zero, is_branch, branch_ctrl, is_jump, new_pc);
 
     always_ff @(posedge clk)
         pc <= new_pc;
