@@ -15,7 +15,7 @@ module regs(
     assign reg1 = (reg1_select != 0) ? registers[reg1_select] : 0;
     assign reg2 = (reg2_select != 0) ? registers[reg2_select] : 0;
 
-    always_ff @(posedge clk)
+    always_ff @(negedge clk)
     begin
         if (reg_write_control && reg_write_select != 0) registers[reg_write_select] <= reg_write_data;
     end

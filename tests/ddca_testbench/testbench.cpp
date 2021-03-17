@@ -60,12 +60,12 @@ int main(int argc, char** argv, char** env) {
         }
 
         if (is_done) {
-            // for (size_t i = 0; i != 5; i++) {
-            //     printf("I = %lu\n", i);
-            //     trace->dump(main_time);
-            //     main_time ++;
-            //     cpu->eval();
-            // }
+            for (size_t i = 0; i <= 20; i++) {
+                // printf("I = %lu\n", i);
+                trace->dump(main_time);
+                main_time ++;
+                cpu->eval();
+            }
             break;
         }
 

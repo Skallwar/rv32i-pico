@@ -2,7 +2,8 @@ module hazard_unit(
     input logic clk,
     input logic [31:0] instr,
     output logic pc_enable,
-    output logic ifid_enable
+    output logic ifid_enable,
+    output logic idex_enable
 );
 
     logic pc_enable_new;
@@ -12,7 +13,10 @@ module hazard_unit(
         begin
             pc_enable = 1;
             ifid_enable = 1;
+	    idex_enable = 1;
         end
+
+    assign idex_enable = 1;
 
     always_comb
         if (instr[6:0] == 7'b1100011 || instr[6:0] == 7'b1101111)
