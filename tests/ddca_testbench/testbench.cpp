@@ -1,7 +1,6 @@
 #include "Vcpu.h"
 #include "Vcpu_cpu.h"
 #include "Vcpu_rom.h"
-#include "Vcpu_instr_fetch.h"
 #include "Vcpu_ram.h"
 #include "verilated.h"
 
