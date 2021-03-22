@@ -33,7 +33,7 @@ module cpu(input logic clk, input logic reset);
         is_jump
     );
 
-    hazard_unit hazard_unit(clk, instr_fetch, pc_enable, ifid_enable, idex_enable);
+    hazard_unit hazard_unit(clk, instr_fetch, instr, idex_instr, pc_enable, ifid_enable, idex_enable);
 
 
     // Datapath
@@ -64,16 +64,17 @@ module cpu(input logic clk, input logic reset);
     sign_ext sign_ext(sign_ext_ctrl, instr[31:0], sign_ext_out);
 
     logic idex_enable;
-    logic [31:0] idex_pc, idex_sign_ext, idex_r1, idex_r2;
-    assign idex_enable = 1;
+    logic [31:0] idex_pc, idex_sign_ext, idex_r1, idex_r2, idex_instr;
     idex_register idex_register(
         clk,
         idex_enable,
         ifid_pc,
+        instr,
         sign_ext_out,
         r1,
         r2,
         idex_pc,
+        idex_instr,
         idex_sign_ext,
         idex_r1,
         idex_r2

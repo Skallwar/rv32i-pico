@@ -20,7 +20,7 @@ module pc_logic(
                 if (!(branch_control ^ alu_zero))
                     new_pc = ifid_pc + sign_ext_out;
                 else
-                        new_pc = ifid_pc + 4;
+                    new_pc = ifid_pc + 4;
             else if (is_jump)
                 new_pc = ifid_pc + sign_ext_out;
             else
